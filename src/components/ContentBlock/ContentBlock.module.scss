@@ -1,0 +1,10 @@
+.content {
+	text-align: center;
+	&__headText {
+		margin-bottom: 10px;
+		font-size: 40px;
+	}
+	&__text {
+		font-size: 3em;
+	}
+}
