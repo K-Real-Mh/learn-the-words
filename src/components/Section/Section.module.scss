@@ -1,0 +1,13 @@
+.cover {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	position: relative;
+	.wrap {
+		position: relative;
+		padding: 50px 16px;
+		max-width: 700px;
+	}
+}

@@ -1,38 +1,98 @@
 import React from 'react';
-import HeaderBlock from './components/HeaderBlock';
-import ContentBlock from './components/ContentBlock';
-import FooterBlock from './components/FooterBlock';
+
+import {
+	FrownOutlined,
+	SyncOutlined,
+	SmileOutlined,
+} from '@ant-design/icons';
+
+import BackgroundBlock from './components/BackgroundBlock';
+import Header from './components/Header';
+import Paragraph from './components/Paragraph';
+import Section from './components/Section';
+import CardList from './components/CardList';
+import Button from './components/Button';
+import Footer from './components/Footer';
+
+import firstBackground from './assets/background.jpg';
+import secondBackground from './assets/background2.jpg';
+import goodGif from './assets/goodGif.gif';
+
+import { wordsList } from "./wordsList";
+
+import s from './App.module.scss';
 
 const App = () => {
 	return (
 		<>
-			<HeaderBlock title="Учите слова онлайн" />
-			<HeaderBlock 
-				title="Нам нравится это"
-				hideBackground
-				descr="Воспользуйтесь карточками для запоминания и пополнения активных словарных запасов"
-				background="black"
-			/>
-			<HeaderBlock 
-				title="ЭЭЭЭ"
-				descr="запасов"
-				background="red"
-				hideBackground
-			/>
-			<ContentBlock
-				title = "Hello"
-				descr = "world"
-				background = "#9a9a9a"
-			/>
-			<ContentBlock
-				title = "Goodbye"
-				descr = "world"
-				background = "#9a99a9"
-			/>
-			<FooterBlock
-				userName = "Кирилл"
-			/>
-			<FooterBlock />
+			<BackgroundBlock
+				BackgroundImg={firstBackground}
+				fullHeight
+			>
+				<Header white>
+					Время учить слова онлайн
+				</Header>
+				<div className={s.good}>
+					<img src={goodGif} />
+				</div>
+				<Paragraph white>
+					Используйте карточки для запоминания и пополняйте словарный запас
+				</Paragraph>
+			</BackgroundBlock>
+			<Section className={s.textCenter}>
+				<Header size="l">
+					Мы создали уроки, чтобы помочь вам увереннее разговаривать на английском языке
+				</Header>
+				<div className={s.motivation}>
+					<div className={s.motivationBlock}>
+						<div className={s.icons}>
+							<FrownOutlined />
+						</div>
+						<Paragraph small>
+							До наших уроков вы расстроены, ведь даже ваша кошка мяукает на английском языке.
+						</Paragraph>
+					</div>
+					<div className={s.motivationBlock}>
+						<div className={s.icons}>
+							<SyncOutlined spin />
+						</div>
+						<Paragraph small>
+							Но затем вы начинаете учить слова с помощью наших онлайн карточек
+						</Paragraph>
+					</div>
+					<div className={s.motivationBlock}>
+						<div className={s.icons}>
+							<SmileOutlined />
+						</div>
+						<Paragraph small>
+							В конце концов вы выучиваете слова, и можете гордиться собой
+						</Paragraph>
+					</div>
+				</div>
+			</Section>
+			<Section bgColor="#f0f0f0" className={s.textCenter}>
+				<Header size='l'>
+					Начать учить английский просто
+				</Header>
+				<Paragraph>
+					Кликай по карточкам и узнавай новые слова, быстро и легко!
+				</Paragraph>
+				<CardList items={wordsList} />
+			</Section>
+			<BackgroundBlock
+				BackgroundImg={secondBackground}
+			>
+				<Header size='l' white>
+					Изуйчайте английский с персональным сайтом помощником
+				</Header>
+				<Paragraph white>
+					Начните прямо сейчас
+				</Paragraph>
+				<Button>
+					Начать бесплатный урок
+				</Button>
+			</BackgroundBlock>
+			<Footer />
 		</>
 	);
 }
