@@ -1,0 +1,28 @@
+.good {
+	width: 203px;
+	margin: 0 auto;
+	img {
+		width: inherit;
+	}
+}
+
+.textCenter {
+	text-align: center;
+}
+
+.motivation {
+	padding: 10px 0px 10px 0px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 40px;
+	.motivationBlock {
+		display: grid;
+		justify-content: center;
+	}
+	.icons {
+		span {
+			font-size: 50px;
+		}
+	}
+}
+
