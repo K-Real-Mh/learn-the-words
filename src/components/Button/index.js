@@ -1,11 +1,11 @@
 import React from 'react';
 import s from './Button.module.scss';
 
-const Button = ({children}) => {
+const Button = ({children, onClick}) => {
 	return (
-		<a href='#' className={s.btn}>
+		<button onClick={onClick} className={s.btn}>
 			{children}
-		</a>
+		</button>
 	)
 }
 

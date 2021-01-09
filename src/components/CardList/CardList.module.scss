@@ -1,4 +1,8 @@
-.cardList {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+.root {
+	display: flex;
+	flex-wrap: wrap;
 }
+
+.form {
+	margin-bottom: 24px;
+ }
