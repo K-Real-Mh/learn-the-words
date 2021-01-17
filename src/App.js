@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import firebase  from 'firebase';
 
 import {
 	FrownOutlined,
@@ -19,16 +19,26 @@ import firstBackground from './assets/background.jpg';
 import secondBackground from './assets/background2.jpg';
 import goodGif from './assets/goodGif.gif';
 
-import { wordsList } from "./wordsList";
-
 import s from './App.module.scss';
 
+const firebaseConfig = {
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
 
 class App extends Component {
 
 	state = {
-		wordArr: wordsList,
+		wordArr: [],
 	}
 
 	inputRef = React.createRef();
@@ -46,22 +56,45 @@ class App extends Component {
 		});
 	}
 
-	handleAddItem = (eng, rus) => {
+	handleAddItem = (values) => {
+		console.log(values);
 		this.setState(({wordArr}) => {
-			const lastIdx = wordArr[wordArr.length - 1].id;
 			const newCard = {
-				eng: eng,
-				rus: rus,
-				id: lastIdx + 1,
+				eng: values.text,
+				rus: values.translate,
+				id: +new Date(),
 			}
 			const newWordArr = [
 				...wordArr
 			];
 			newWordArr.push(newCard);
+			database.ref('/').set([...wordArr, {
+				eng: values.text,
+				rus: values.translate,
+				id: +new Date(),
+			}])
 			return {
 				wordArr: newWordArr,
 			};
 		})
+	}
+
+	componentDidMount() {
+		database.ref('/').once('value').then(res => {
+			this.setState({
+				wordArr: res.val(),
+			});
+		})
+	}
+
+	setNewWord = () => {
+		const { wordArr } = this.state;
+
+		database.ref('/').set([...wordArr, {
+			id: +new Date(),
+			eng: 'mouse',
+			rus: 'мышь'
+		}])
 	}
 
 	render() {
@@ -128,7 +161,7 @@ class App extends Component {
 						Кликай по карточкам и узнавай новые слова, быстро и легко!
 					</Paragraph>
 					<CardList 
-					inputRef={this.inputRef} 
+					inputERef={el => this.inputRef = el} 
 					onDeletedItem={this.handleDeletedItem} 
 					items={wordArr} 
 					onAddItem={this.handleAddItem} 
