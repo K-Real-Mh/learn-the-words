@@ -1,73 +1,91 @@
 import React, { Component } from 'react';
+import getTranslateWord from '../../services/dictionary';
 import Card from '../Card';
+import { Input, Form, Button } from 'antd';
 
 import s from './CardList.module.scss';
-
 class CardList extends Component {
 
 	state = {
-		valueEng: '',
-		valueRus: '',
-		label: '',
+		isBusy: false,
+		value: '',
 	}
 
-	handleInputChangeEng = (e) => {
+	formRef = React.createRef();
+	inputEngRef = React.createRef();
+
+	constructor(props) {
+		super(props);
+
+		props.inputERef && props.inputERef(this.inputEngRef);
+	}
+
+	handleInputChange = ({target}) => {
 		this.setState({
-			valueEng: e.target.value,
-		});
+			value: target.value,
+		})
 	}
+	
+	getTheWord = async ()  => {
+		const {value} = this.state;
+		const getWord = await getTranslateWord(value);
+		const {onAddItem} = this.props;
+		onAddItem && onAddItem(getWord);
 
-	handleInputChangeRus = (e) => {
 		this.setState({
-			valueRus: e.target.value
-		});
-	}
-
-	handleSubmitForm = (e) => {
-		e.preventDefault();
-		this.props.onAddItem(this.state.valueEng, this.state.valueRus);
-		this.setState(({valueEng, valueRus})=>{
-			return {
-				label: "Добавлена карточка. Cлово на англ.яз: " + valueEng + " Перевод: "+ valueRus,
-				valueEng: '',
-				valueRus: '',
-			}
+			value: '',
+			isBusy: false,
 		})
 	}
 
+	handleSubmitForm = async () => {
+		this.setState({
+			isBusy:true,
+		}, this.getTheWord)
+		this.formRef.current.resetFields();
+	}
+
 	render() {
-		const { items =[], onDeletedItem,  inputRef } = this.props;
+		const { items = [], onDeletedItem } = this.props;
+		const { isBusy } = this.state;
 		return (
 			<>
-				<div>
-					{this.state.label}
+				<div className={s.form}>
+					<Form
+						ref={this.formRef}
+						name="basic"
+						layout="inline"
+						onFinish={this.handleSubmitForm}
+						
+					>
+						<Form.Item
+							label="English Word"
+							name="eng"
+						>
+							<Input
+								ref={this.inputEngRef}
+								placeholder="Введите слово на инглише"
+								onChange={this.handleInputChange}
+							/>
+						</Form.Item>
+						<Form.Item>
+							<Button
+								type="primary"
+								htmlType="submit"
+								loading={isBusy}
+							>
+								Добавить
+							</Button>
+						</Form.Item>
+					</Form>
 				</div>
-				<form 
-				onSubmit={this.handleSubmitForm}
-				className={s.form}
-				>
-					<input 
-					ref={inputRef}
-					type="text"
-					value={this.state.valueEng}
-					placeholder="слово на английском"
-					onChange={this.handleInputChangeEng}
-					/>
-					<input 
-					type="text"
-					value={this.state.valueRus}
-					placeholder="перевод"
-					onChange={this.handleInputChangeRus}
-					/>
-					<button>Add New Word</button>
-				</form>
 				<div className={s.root}>
 					{
 						items.map(({ eng, rus, id }) => (
 							<Card
-							onDeleted={()=> {
-								onDeletedItem(id);
-							}}
+								onDeleted={() => {
+									onDeletedItem(id);
+								}}
 								key={id}
 								eng={eng}
 								rus={rus}
