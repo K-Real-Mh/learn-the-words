@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import LoginPage from './pages/Login';
 
-import { Spin, Layout } from 'antd';
+import { Spin, Layout, Menu } from 'antd';
 
 import s from './App.module.scss';
 import FirebaseContext from './context/firebaseContext';
@@ -57,17 +57,30 @@ class App extends Component {
 			<BrowserRouter>
 
 				<Route path="/login" component={LoginPage} />
-				<Route render={() => (
+				<Route render={(props) => {
+					const {history: {push}} = props
+					return (
 					<Layout>
 						<Header>
-
+							<Menu theme="dark" mode="horizontal">
+								<Menu.Item key="1">
+									<Link to="/">Home</Link>
+								</Menu.Item>
+								<Menu.Item key="2">
+									<Link to="/about">About</Link>
+								</Menu.Item>
+								<Menu.Item key="3" onClick={() => push('/contacts')}>
+									Contacts
+								</Menu.Item>
+							</Menu>
 						</Header>
 						<Content>
 							<Route path="/" exact component={HomePage} />
 							<Route path="/about" render={() => <h1>Немного о себе</h1>} />
+							<Route path="/contacts" render={() => <h1>Немного контактов</h1>} />
 						</Content>
 					</Layout>
-				)} />
+					)}} />
 
 			</BrowserRouter>
 		)
