@@ -36,6 +36,8 @@ class Firebase {
 
 	getUserCardsRef = () => this.database.ref(`/cards/${this.userUid}`);
 
+	getUserCurrentCardRef = (id) => this.database.ref(`/cards/${this.userUid}/${id}`);
+
 	addItem = ({ text, translate }) => {
 		this.getUserCardsRef().set([...this.wordsArr, {
 			id: +new Date(),

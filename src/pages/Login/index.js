@@ -12,6 +12,11 @@ export default class LoginPage extends Component {
 		registration: false,
 	}
 
+	componentDidMount() {
+		
+	}
+	
+
 	handleClickLink = () => {
 		this.setState({
 			registration: true,
@@ -19,11 +24,12 @@ export default class LoginPage extends Component {
 	}
 
 	onFinish = ({ email, password }) => {
-		const { signWithEmail } = this.context;
+		const { signWithEmail, setUserUid } = this.context;
 		const { history } = this.props;
 		signWithEmail(email, password)
 			.then(res => {
-				console.log('res', res);
+				setUserUid(res.user.uid);
+				localStorage.setItem('user', res.user.uid)
 				history.push('/')
 			})
 	}

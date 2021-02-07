@@ -10,7 +10,7 @@ import BackgroundBlock from '../../components/BackgroundBlock';
 import Header from '../../components/Header';
 import Paragraph from '../../components/Paragraph';
 import Section from '../../components/Section';
-import CardList, { hoc } from '../../components/CardList';
+import  { hoc } from '../../components/CardList';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
@@ -27,7 +27,9 @@ export default class HomePage extends PureComponent {
 	state = {
 		wordArr: [],
 	}
-
+	componentDidMount() {
+		console.log(this.props);
+	}
 	inputRef = React.createRef();
 
 	render() {
