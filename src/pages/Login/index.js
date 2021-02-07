@@ -20,17 +20,21 @@ export default class LoginPage extends Component {
 
 	onFinish = ({ email, password }) => {
 		const { signWithEmail } = this.context;
+		const { history } = this.props;
 		signWithEmail(email, password)
 			.then(res => {
 				console.log('res', res);
+				history.push('/')
 			})
 	}
 
 	onFinishRegister = ({ email, password }) => {
 		const { createUserWithEmail } = this.context;
+		const { history } = this.props;
 		createUserWithEmail(email, password)
 			.then(res => {
 				console.log('res', res);
+				history.push('/')
 			})
 	}
 
@@ -166,7 +170,6 @@ export default class LoginPage extends Component {
 
 	render() {
 		const { registration } = this.state;
-
 		return (
 			<Layout>
 				<Content>

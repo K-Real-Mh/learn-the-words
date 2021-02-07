@@ -10,7 +10,8 @@ import BackgroundBlock from '../../components/BackgroundBlock';
 import Header from '../../components/Header';
 import Paragraph from '../../components/Paragraph';
 import Section from '../../components/Section';
-import CardList from '../../components/CardList';
+import CardList, { hoc } from '../../components/CardList';
+import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 
@@ -91,9 +92,17 @@ export default class HomePage extends PureComponent {
 					<Paragraph>
 						Кликай по карточкам и узнавай новые слова, быстро и легко!
 					</Paragraph>
-					<CardList
-						inputERef={el => this.inputRef = el}
-					/>
+					<FirebaseContext.Consumer>
+						{
+							({getUserCardsRef, setWordsArr, addItem, deletedItem,  deleteUserUid }) => {
+								const CardEngList = hoc(Card, getUserCardsRef, setWordsArr, addItem, deletedItem, deleteUserUid);
+								return <CardEngList
+								inputERef={el => this.inputRef = el}
+							/>
+							}
+						}
+					</FirebaseContext.Consumer>
+					
 				</Section>
 				<BackgroundBlock
 					BackgroundImg={secondBackground}
